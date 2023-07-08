@@ -44,7 +44,7 @@ export default function Product() {
                             <Label htmlFor={"alamat"}>Alamat</Label>
                             <textarea
                                 id="alamat"
-                                className="rounded-rad-4 textarea focus:outline-none focus:border-ngaos-4"
+                                className="border rounded-rad-4 textarea focus:outline-none focus:border-ngaos-4"
                                 placeholder="Alamat"
                             ></textarea>
                         </div>

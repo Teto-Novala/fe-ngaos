@@ -82,7 +82,7 @@ export default function Home() {
                 {/* content */}
                 <div className="px-4">
                     <h1 className="font-bold pt-7 text-head-2 text-ngaos-4">
-                        Data Penjualan Terkini
+                        Data Penjualan
                     </h1>
                     {/* menu */}
                     <div className="flex flex-col gap-3 mt-5 ">

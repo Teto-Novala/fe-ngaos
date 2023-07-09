@@ -27,7 +27,7 @@ export default function Product() {
                         <div className="flex flex-col gap-1">
                             <Label>Produk</Label>
                             <select
-                                className="w-full  rounded-rad-4 border  px-6 py-[14px] text-body-6 font-normal appearance-none focus:border-ngaos-4 focus:outline-none"
+                                className="w-full border-net-2 rounded-rad-4 border  px-6 py-[14px] text-body-6 font-normal appearance-none focus:border-ngaos-4 focus:outline-none"
                                 defaultValue={"DEFAULT"}
                             >
                                 <option disabled value={"DEFAULT"}>
@@ -44,7 +44,7 @@ export default function Product() {
                             <Label htmlFor={"alamat"}>Alamat</Label>
                             <textarea
                                 id="alamat"
-                                className="border rounded-rad-4 textarea focus:outline-none focus:border-ngaos-4"
+                                className=" border-net-2  rounded-rad-4 textarea focus:outline-none focus:border-ngaos-4"
                                 placeholder="Alamat"
                             ></textarea>
                         </div>

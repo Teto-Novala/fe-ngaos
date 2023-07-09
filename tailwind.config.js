@@ -14,6 +14,12 @@ module.exports = {
                 "ngaos-4": "#0E2954",
                 "ngaos-5": "#EF6262",
                 "ngaos-6": "#F3AA60",
+                "net-1": "#FFF",
+                "net-2": "#D0D0D0",
+                "net-3": "#8A8A8A",
+                "net-4": "#3C3C3C",
+                "net-5": "#151515",
+                "net-6": "#EEEE",
             },
             fontFamily: {
                 poppins: ["var(--font-poppins)"],

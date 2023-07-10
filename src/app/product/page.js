@@ -12,7 +12,7 @@ export default function Product() {
                 {/* content */}
                 <div className="px-4">
                     <h1 className="font-bold pt-7 text-head-2 text-ngaos-4">
-                        Input Data Transaksi
+                        Input Data Produk
                     </h1>
                     {/* form input */}
                     <form className="flex flex-col gap-3 mt-5 ">
@@ -102,11 +102,3 @@ export default function Product() {
         </>
     );
 }
-
-// pembeli
-// product
-// alamat
-// tanggal beli
-// bukti
-// jumlah per kg
-// harga

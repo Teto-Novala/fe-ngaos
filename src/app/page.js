@@ -15,8 +15,6 @@ import { getRole, userSlice } from "@/store/user";
 import BottomNavbar from "@/components/BottomNavbar";
 
 // utils
-import { dashboardMenu } from "@/utils/generateMenu";
-import { handlingDashMenuStyle } from "@/utils/generateStyle";
 import { formatRupiah } from "@/utils/formatRupiah";
 import { WHO_AM_AI_URL } from "@/apis/api";
 
@@ -29,6 +27,46 @@ export default function Home() {
     //redux
     const role = useSelector(getRole);
     const { setRole } = userSlice.actions;
+
+    //func
+    const dashboardMenu = [
+        {
+            id: 1,
+            name: "Pendapatan Hari Ini",
+            price: 500000,
+        },
+        {
+            id: 2,
+            name: "Transaksi Hari Ini",
+            total: 10,
+        },
+        {
+            id: 3,
+            name: "Semua Pendapatan",
+            price: 10000000,
+        },
+        {
+            id: 4,
+            name: "Semua Transaksi",
+            total: 50,
+        },
+    ];
+
+    const handlingDashMenuStyle = (menuId) => {
+        switch (menuId) {
+            case 1:
+                return "border-ngaos-1 bg-ngaos-1";
+            case 2:
+                return "border-ngaos-5 bg-ngaos-5";
+            case 3:
+                return "border-ngaos-3 bg-ngaos-3";
+            case 4:
+                return "border-ngaos-6 bg-ngaos-6";
+
+            default:
+                return "border-ngaos-1 bg-ngaos-1";
+        }
+    };
 
     //useeffects
     useEffect(() => {

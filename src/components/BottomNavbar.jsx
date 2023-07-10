@@ -30,7 +30,7 @@ export default function BottomNavbar() {
     const role = useSelector(getRole);
 
     return (
-        <div className="fixed inset-x-0 bottom-0 flex h-[60px] justify-around  bg-white p-2  text-center text-3xl shadow-low ">
+        <div className="fixed inset-x-0 bottom-0 flex h-[80px] justify-around  bg-white p-2  text-center text-3xl shadow-low ">
             <div
                 onClick={() =>
                     pathname === "/" ? router.refresh() : router.push("/")

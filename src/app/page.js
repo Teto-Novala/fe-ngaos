@@ -78,7 +78,7 @@ export default function Home() {
                             Authorization: `Bearer ${token}`,
                         },
                     });
-                    if (!role || res?.data?.role !== role) {
+                    if (!role || res?.data?.data?.role !== role) {
                         dispatch(setRole(res.data.role));
                     }
                 };

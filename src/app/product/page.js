@@ -1,10 +1,70 @@
 "use client";
+
+//core
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+//third parties
+import axios from "axios";
+import { useSession } from "next-auth/react";
+
+//redux
+
+//components
 import BottomNavbar from "@/components/BottomNavbar";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 
+//apis
+import { PRODUCT_URL } from "@/apis/api";
+
+//utils
+import { formatRupiah } from "@/utils/formatRupiah";
+
 export default function Product() {
+    //core
+    const session = useSession();
+    const router = useRouter();
+    let token = session?.data?.user?.token;
+
+    //state
+    const [products, setProducts] = useState([]);
+    const [filterProducts, setFilterProducts] = useState([]);
+    const [search, setSearch] = useState("");
+
+    const handleSearch = (e) => {
+        const filteredProduct = products?.filter((product) =>
+            product.name.toLowerCase().includes(e.target.value.toLowerCase())
+        );
+        // console.log("fitler", filteredProduct);
+        setFilterProducts(filteredProduct);
+    };
+
+    //effetcs
+    useEffect(() => {
+        if (token) {
+            try {
+                const fetchDataUser = async () => {
+                    const res = await axios.get(PRODUCT_URL("getall"), {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setProducts(res.data.data);
+                    setFilterProducts(res.data.data);
+                    // console.log("ALL PRODUCT", res);
+                };
+                fetchDataUser();
+            } catch (error) {}
+        }
+    }, [token]);
+
+    // console.log("================DEBUG PRODUCT=================");
+    // console.log("ALL PRODUCT", products);
+    // console.log("================DEBUG PRODUCT=================");
+
     return (
         <>
             {/* MOBILE MODE */}
@@ -14,6 +74,73 @@ export default function Product() {
                     <h1 className="font-bold pt-7 text-head-2 text-ngaos-4">
                         Manajemen Produk
                     </h1>
+
+                    <div className="grid grid-cols-12 mt-5 gap-5">
+                        <Input
+                            name="search"
+                            // value={search}
+                            onChange={handleSearch}
+                            placeholder={"Cari Produk"}
+                            className="col-span-8 py-2 px-5 rounded-rad-4"
+                        />
+                        <Button
+                            onClick={() => router.push("/product/add-product")}
+                            className=" rounded-rad-4 py-2 col-span-4 bg-ngaos-4 text-white px-3 "
+                        >
+                            Tambah
+                        </Button>
+                    </div>
+
+                    <div className="flex flex-col mt-8 gap-5">
+                        {filterProducts?.length ? (
+                            filterProducts.map((product, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className="rounded-rad-2 shadow-low grid grid-cols-12"
+                                    >
+                                        <Image
+                                            alt=""
+                                            src={product.image}
+                                            width={140}
+                                            height={140}
+                                            className="col-span-5 "
+                                        />
+
+                                        <div className="col-span-7 w-full flex flex-col justify-around">
+                                            <div className="px-1 flex flex-col gap-1">
+                                                <h1 className="text-title-3 font-bold text-ngaos-4">
+                                                    {product.name}
+                                                </h1>
+                                                <div>
+                                                    <p>
+                                                        jenis :{" "}
+                                                        {product.category}
+                                                    </p>
+                                                    <p className="text-ngaos-5 font-bold">
+                                                        Harga :{" "}
+                                                        {formatRupiah(
+                                                            product.price
+                                                        )}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="w-full px-5">
+                                                <Button className="bg-ngaos-4 text-white w-full rounded-rad-2 py-1">
+                                                    Detail Produk
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div>
+                                <h1>Tidak Ada Produk!</h1>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 {/* content */}
 

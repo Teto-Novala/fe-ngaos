@@ -30,9 +30,9 @@ export default function Product() {
     let token = session?.data?.user?.token;
 
     //state
+    const [fetchData, setFetchData] = useState(true);
     const [products, setProducts] = useState([]);
     const [filterProducts, setFilterProducts] = useState([]);
-    const [search, setSearch] = useState("");
 
     const handleSearch = (e) => {
         const filteredProduct = products?.filter((product) =>
@@ -42,24 +42,51 @@ export default function Product() {
         setFilterProducts(filteredProduct);
     };
 
-    //effetcs
-    useEffect(() => {
+    const handleDetail = (idProduct) => {
+        router.push(`/product/detail-product?product=${idProduct}`);
+    };
+
+    const handleDelete = async (idProduct) => {
         if (token) {
             try {
-                const fetchDataUser = async () => {
-                    const res = await axios.get(PRODUCT_URL("getall"), {
+                const res = await axios.delete(
+                    PRODUCT_URL("delete", idProduct),
+                    {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
-                    });
-                    setProducts(res.data.data);
-                    setFilterProducts(res.data.data);
-                    // console.log("ALL PRODUCT", res);
-                };
-                fetchDataUser();
-            } catch (error) {}
+                    }
+                );
+                setFetchData(true);
+                console.log("DELETE PRODUCT", res);
+                // console.log(" EROR DELETE PRODUCT", res);
+            } catch (error) {
+                console.log(" EROR DELETE PRODUCT", res);
+            }
         }
-    }, [token]);
+    };
+
+    //effetcs
+    useEffect(() => {
+        if (token) {
+            if (fetchData) {
+                const fetchDataProduct = async () => {
+                    try {
+                        const res = await axios.get(PRODUCT_URL("getall"), {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        });
+                        setProducts(res.data.data);
+                        setFilterProducts(res.data.data);
+                        // console.log("ALL PRODUCT", res);
+                    } catch (error) {}
+                };
+                fetchDataProduct();
+                setFetchData(false);
+            }
+        }
+    }, [token, fetchData]);
 
     // console.log("================DEBUG PRODUCT=================");
     // console.log("ALL PRODUCT", products);
@@ -107,7 +134,7 @@ export default function Product() {
                                             className="col-span-5 "
                                         />
 
-                                        <div className="col-span-7 w-full flex flex-col justify-around">
+                                        <div className="col-span-7 w-full flex flex-col justify-between gap-3">
                                             <div className="px-1 flex flex-col gap-1">
                                                 <h1 className="text-title-3 font-bold text-ngaos-4">
                                                     {product.name}
@@ -126,9 +153,22 @@ export default function Product() {
                                                 </div>
                                             </div>
 
-                                            <div className="w-full px-5">
-                                                <Button className="bg-ngaos-4 text-white w-full rounded-rad-2 py-1">
-                                                    Detail Produk
+                                            <div className="w-full px-5 flex flex-col gap-2 pb-2">
+                                                <Button
+                                                    onClick={() =>
+                                                        handleDetail(product.id)
+                                                    }
+                                                    className="text-body-6 bg-ngaos-4 text-white w-full rounded-rad-2 py-1"
+                                                >
+                                                    Detail
+                                                </Button>
+                                                <Button
+                                                    onClick={() =>
+                                                        handleDelete(product.id)
+                                                    }
+                                                    className=" text-body-6 bg-ngaos-5 text-white w-full rounded-rad-2 py-1"
+                                                >
+                                                    Hapus
                                                 </Button>
                                             </div>
                                         </div>

@@ -1,79 +1,53 @@
 "use client";
 
 // core
-import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+//third parties
+import { useSession } from "next-auth/react";
+import axios from "axios";
+
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { getRole, userSlice } from "@/store/user";
 
 // components
 import BottomNavbar from "@/components/BottomNavbar";
-import { BsCart2 } from "react-icons/bs";
-import { BiHomeAlt, BiMoney } from "react-icons/bi";
-import { TbReportAnalytics } from "react-icons/tb";
 
 // utils
+import { dashboardMenu } from "@/utils/generateMenu";
+import { handlingDashMenuStyle } from "@/utils/generateStyle";
 import { formatRupiah } from "@/utils/formatRupiah";
+import { WHO_AM_AI_URL } from "@/apis/api";
 
 export default function Home() {
-    // const sidebar = [
-    //     {
-    //         id: 1,
-    //         icon: <BiHomeAlt />,
-    //         name: "Dashboard",
-    //     },
-    //     {
-    //         id: 2,
-    //         icon: <BsCart2 />,
-    //         name: "Produk",
-    //     },
-    //     {
-    //         id: 3,
-    //         icon: <BiMoney />,
-    //         name: "Transaksi",
-    //     },
-    //     {
-    //         id: 4,
-    //         icon: <TbReportAnalytics />,
-    //         name: "Laporan",
-    //     },
-    // ];
+    //core
+    const session = useSession();
+    const dispatch = useDispatch();
+    let token = session?.data?.user?.token;
 
-    const dashboardMenu = [
-        {
-            id: 1,
-            name: "Pendapatan Hari Ini",
-            price: 500000,
-        },
-        {
-            id: 2,
-            name: "Transaksi Hari Ini",
-            total: 10,
-        },
-        {
-            id: 3,
-            name: "Semua Pendapatan",
-            price: 10000000,
-        },
-        {
-            id: 4,
-            name: "Semua Transaksi",
-            total: 50,
-        },
-    ];
+    //redux
+    const role = useSelector(getRole);
+    const { setRole } = userSlice.actions;
 
-    const handlingDashMenuStyle = (menuId) => {
-        switch (menuId) {
-            case 1:
-                return "border-ngaos-1 bg-ngaos-1";
-            case 2:
-                return "border-ngaos-5 bg-ngaos-5";
-            case 3:
-                return "border-ngaos-3 bg-ngaos-3";
-            case 4:
-                return "border-ngaos-6 bg-ngaos-6";
-
-            default:
-                return "border-ngaos-1 bg-ngaos-1";
+    //useeffects
+    useEffect(() => {
+        if (token) {
+            try {
+                const fetchDataUser = async () => {
+                    const res = await axios.get(WHO_AM_AI_URL, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    if (!role || res?.data?.role !== role) {
+                        dispatch(setRole(res.data.role));
+                    }
+                };
+                fetchDataUser();
+            } catch (error) {}
         }
-    };
+    }, [token, dispatch, role, setRole]);
 
     return (
         <main>

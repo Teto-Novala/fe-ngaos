@@ -1,6 +1,9 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
 
+import { SessionProviders } from "@/components/SessionProvider";
+import { Providers } from "@/components/Providers";
+
 const poppins = Poppins({
     weight: ["400", "500", "700"],
     subsets: ["latin"],
@@ -16,7 +19,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en" className={`${poppins.variable}`}>
-            <body suppressHydrationWarning={true}>{children}</body>
+            <body suppressHydrationWarning={true}>
+                <SessionProviders>
+                    <Providers>{children}</Providers>
+                </SessionProviders>
+            </body>
         </html>
     );
 }

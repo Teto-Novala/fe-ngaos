@@ -79,7 +79,7 @@ export default function Home() {
                         },
                     });
                     if (!role || res?.data?.data?.role !== role) {
-                        dispatch(setRole(res.data.role));
+                        dispatch(setRole(res?.data?.data?.role));
                     }
                 };
                 fetchDataUser();

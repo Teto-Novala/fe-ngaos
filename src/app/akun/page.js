@@ -42,14 +42,16 @@ export default function Akun() {
                     });
 
                     setUserData({
-                        name: res.data.name,
-                        email: res.data.email,
-                        phone: res.data.phone,
+                        name: res.data.data.name,
+                        email: res.data.data.email,
+                        phone: res.data.data.phone,
                     });
-                    // console.log("USER DATA", res.data.name);
+                    // console.log("USER DATA", res);
                 };
                 fetchDataUser();
-            } catch (error) {}
+            } catch (error) {
+                // console.log(error);
+            }
         }
     }, [token]);
 
